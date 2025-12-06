@@ -29,12 +29,11 @@ app.use(express.json({ limit: '10mb' })); // Increase limit for base64 images
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI;
+let MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://flowtask:flow@cluster0.nllycgv.mongodb.net/';
 
 // Check if MONGO_URI is loaded
-if (!MONGO_URI) {
-  console.error('MONGO_URI is not defined in .env file');
-  process.exit(1);
+if (!MONGO_URI || MONGO_URI === 'YOUR_MONGO_URI') {
+  console.warn('⚠️  MONGO_URI not properly configured. Using default or check .env file');
 }
 
 console.log('Connecting to MongoDB...');
