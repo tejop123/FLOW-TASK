@@ -12,14 +12,34 @@ const app = express();
 
 // Configure CORS for both local and Vercel deployment
 const corsOptions = {
-  origin: [
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
+    
+    // Allow localhost and all Vercel domains
+    const allowedOrigins = [
     'http://localhost:3006',
     'http://localhost:3005',
     'http://localhost:5000',
-    'https://frontend-9e4aeacij-tm344556-gmailcoms-projects.vercel.app',
-    'https://frontend-ncg0lkaqr-tm344556-gmailcoms-projects.vercel.app',
-    process.env.FRONTEND_URL || '*'
-  ],
+    ];
+    
+    // Allow all Vercel domains
+    if (origin.includes('vercel.app') || origin.includes('localhost')) {
+      return callback(null, true);
+    }
+    
+    // Check if origin is in allowed list
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    
+    // For development, allow all
+    if (process.env.NODE_ENV === 'development') {
+      return callback(null, true);
+    }
+    
+    callback(new Error('Not allowed by CORS'));
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']

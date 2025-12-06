@@ -1,17 +1,24 @@
 // Smart API URL - uses same host as frontend (works on any IP)
 const getApiUrl = () => {
-  if (import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL;
+  const envUrl = import.meta.env.VITE_API_URL;
+  console.log('VITE_API_URL from env:', envUrl);
+  
+  if (envUrl && envUrl.trim()) {
+    console.log('Using configured API URL:', envUrl);
+    return envUrl;
   }
   
   // Automatically use the same host as the frontend
   const host = window.location.hostname;
   const protocol = window.location.protocol;
-  return `${protocol}//${host}:5000/api`;
+  const fallbackUrl = `${protocol}//${host}:5000/api`;
+  console.log('Using fallback API URL:', fallbackUrl);
+  return fallbackUrl;
 };
 
-const API_URL = getApiUrl();
 
+const API_URL = getApiUrl();
+console.log('Final API_URL:', API_URL);
 // Helper to get auth token
 const getToken = () => {
   return localStorage.getItem('token');
@@ -32,7 +39,9 @@ const getHeaders = () => {
 // Generic fetch wrapper
 const apiRequest = async (endpoint, options = {}) => {
   try {
-    const response = await fetch(`${API_URL}${endpoint}`, {
+    const fullUrl = `${API_URL}${endpoint}`;
+    console.log('Fetching:', fullUrl);
+    const response = await fetch(fullUrl, {
       ...options,
       headers: {
         ...getHeaders(),
@@ -40,6 +49,7 @@ const apiRequest = async (endpoint, options = {}) => {
       },
     });
 
+    console.log('Response status:', response.status);
     const data = await response.json();
 
     if (!response.ok) {
