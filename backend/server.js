@@ -9,7 +9,22 @@ import taskRoutes from "./routes/taskRoutes.js";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+// Configure CORS for both local and Vercel deployment
+const corsOptions = {
+  origin: [
+    'http://localhost:3006',
+    'http://localhost:3005',
+    'http://localhost:5000',
+    'https://frontend-9e4aeacij-tm344556-gmailcoms-projects.vercel.app',
+    process.env.FRONTEND_URL || '*'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' })); // Increase limit for base64 images
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
