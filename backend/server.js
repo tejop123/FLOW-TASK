@@ -17,6 +17,7 @@ const corsOptions = {
     'http://localhost:3005',
     'http://localhost:5000',
     'https://frontend-9e4aeacij-tm344556-gmailcoms-projects.vercel.app',
+    'https://frontend-ncg0lkaqr-tm344556-gmailcoms-projects.vercel.app',
     process.env.FRONTEND_URL || '*'
   ],
   credentials: true,
