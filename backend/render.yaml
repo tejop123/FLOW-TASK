@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: flowtask-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGO_URI
+        scope: run
+        value: mongodb+srv://flowtask:flow@cluster0.nllycgv.mongodb.net/
+      - key: JWT_SECRET
+        scope: run
+        value: supersecretkey
+      - key: NODE_ENV
+        value: production
+    healthCheckPath: /health
