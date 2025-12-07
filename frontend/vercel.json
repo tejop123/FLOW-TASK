@@ -1,0 +1,10 @@
+{
+  "env": {
+    "VITE_API_URL": "https://flow-task-t4ih.onrender.com/api"
+  },
+  "build": {
+    "env": {
+      "VITE_API_URL": "https://flow-task-t4ih.onrender.com/api"
+    }
+  }
+}
